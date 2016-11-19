@@ -1,7 +1,6 @@
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
-import java.util.TreeSet;
 
 public class PacketRouting {
 
@@ -12,6 +11,7 @@ public class PacketRouting {
 	
 	PriorityQueue<Request> request;
 	
+	// Initial constructor
 	PacketRouting(int vertexNumber, int bufferCap, int linkCap) {
 		
 		// Checking if buffer capacity is in range
@@ -50,7 +50,6 @@ public class PacketRouting {
 		
 		writeOutConfiguration();
 	}
-	
 	
 	// Write out configuration of the algorithm
 	private void writeOutConfiguration() {
@@ -96,12 +95,39 @@ public class PacketRouting {
 		}
 	}
 	
+	public void loop() {
+		filter();
+		
+		for(Request req: request) {
+			if(req.distance() <= lv) {
+				System.out.println("Near request -> Using NEAR routing algorithm");
+			}
+			else {
+				System.out.println("Far request -> Using IPP and INIT algorithm");
+			}
+		}
+	}
+	
+	public boolean routeNear(Request req) {
+		ArrayList<Integer> tmp = new ArrayList<Integer>();	// For holding temporal route
+		
+		for(int i=0; i<req.distance(); i++) {
+			// TODOOOO
+			// if next vertex has free link capacity go there
+			// else return false, indicating that request is rejected
+		}
+		
+		req.setRoute(tmp);
+		
+		return true;
+	}
+	
+	
+///////////////////////////////////////////////////////////////////////////	
 	public static void main(String[] args) {
 		
 		PacketRouting tmp = new PacketRouting(5000, 10, 10);
-		
 		System.out.println("Test");
 
 	}
-
 }

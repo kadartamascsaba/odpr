@@ -1,6 +1,6 @@
 import java.util.Comparator;
 
-public class RequestComparator implements Comparator<Request>{
+public class RequestComparator implements Comparator<Request> {
 
 	@Override
 	public int compare(Request arg0, Request arg1) {

@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Request {
@@ -40,8 +39,11 @@ public class Request {
 	public void move() {
 		int tmp = route.get(0);
 		
+		route.remove(0);
+		
 		if(tmp == 1) {
 			current++;
+			
 			
 			if(current == destination) {
 				over = true;
