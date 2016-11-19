@@ -10,4 +10,12 @@ public class Request {
 	public int distance() {
 		return Math.abs(source - destination);
 	}
+	
+	public int getSource() {
+		return this.source;
+	}
+	
+	public int getDestination() {
+		return this.destination;
+	}
 }

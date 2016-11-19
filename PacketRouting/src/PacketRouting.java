@@ -1,4 +1,5 @@
 import java.lang.Math;
+import java.util.ArrayList;
 import java.util.PriorityQueue;
 import java.util.TreeSet;
 
@@ -69,11 +70,30 @@ public class PacketRouting {
 		request.add(new Request(source, destination));
 	}
 	
+	// Filter request, containing only the first b+c for each vertex
 	public void filter() {
+		// List for checking if source capacity is overloaded
 		int tmp[] = new int[n];
 		for(int i=0; i<n; tmp[i++]=0);
 		
+		// A temporary list that contains the filtered request
+		ArrayList<Request> filtered = new ArrayList<Request>();
 		
+		// Go through all the requests
+		// If capacity is overloaded then drop the request, else keep it 
+		while(!request.isEmpty()) {
+			if(tmp[request.peek().getSource()] <= b+c) {
+				filtered.add(request.poll());
+			}
+			else {
+				request.poll();
+			}
+		}
+		
+		// Load request from filtered list into request priority queue
+		for(Request req : filtered) {
+			request.add(req);
+		}
 	}
 	
 	public static void main(String[] args) {
