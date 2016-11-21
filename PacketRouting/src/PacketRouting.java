@@ -5,11 +5,16 @@ import java.util.PriorityQueue;
 public class PacketRouting {
 
 	int n;				// Vertex number
-	int B, C, b, c;		// Buffer and link capacity		
+	int B, C;    		// Buffer and link capacity
+	int b, c;    		// Virtual buffer and link capacity	
 	int lh, lv;			// Tile horizontal and vertical length
 	int pmax;			// Maximum path length
 	
 	PriorityQueue<Request> request;
+	ArrayList<Vertex> vertex;
+	ArrayList<Request> accepted;
+	
+	ArrayList<Tiling> tilings;
 	
 	// Initial constructor
 	PacketRouting(int vertexNumber, int bufferCap, int linkCap) {
@@ -46,7 +51,38 @@ public class PacketRouting {
 		lv = (int) (6*tmp)/(5*b);
 		
 		
+		vertex  = new ArrayList<Vertex>();
+		for(int i=0; i<n; i++) {
+			vertex.add(new Vertex());
+		}
 		request = new PriorityQueue<Request>(100, new RequestComparator());
+		
+		tilings = new ArrayList<Tiling>();
+		
+		tilings.add(new Tiling(n, lv, lh, -lv/2, -lh/2));
+		tilings.add(new Tiling(n, lv, lh, -lv/2,     0));
+		tilings.add(new Tiling(n, lv, lh,     0, -lh/2));
+		tilings.add(new Tiling(n, lv, lh,     0,     0));
+		
+		
+		for(int i=0; i<pmax/lh+50; i++) {
+			for(int j=0; j<tilings.size(); j++) {
+				tilings.get(j).addColumn();
+			}
+		}
+		
+		
+		for(Tiling t : tilings) {
+			System.out.println(t.s.getX() + " - " + t.s.getY());
+		}
+		
+		
+		
+		for(int i=0; i<tilings.size(); i++) {
+			if(tilings.get(i).getSWTile(new Request(3, 100, 3)) != null) {
+				System.out.println("FOUND IN " + i);
+			}
+		}
 		
 		writeOutConfiguration();
 	}
@@ -59,14 +95,17 @@ public class PacketRouting {
 		System.out.println(" - link capacity: "   + C);
 		System.out.println(" - tile vertical length: "   + lv);
 		System.out.println(" - tile horizontal length: " + lh);
+		System.out.println(" - maximum path length: " + pmax);
+		System.out.println(" - tiling length: " + tilings.get(0).getTilingWidth());
+		System.out.println(" - tiling height: " + tilings.get(0).getTilingHeight());
 	}
 	
 	// Adds request to the list, sorted by source-destination distance
 	public void addRequest(Request req) {
 		request.add(req);
 	}
-	public void addRequest(int source, int destination) {
-		request.add(new Request(source, destination));
+	public void addRequest(int source, int destination, int time) {
+		request.add(new Request(source, destination, time));
 	}
 	
 	// Filter request, containing only the first b+c for each vertex
@@ -96,11 +135,14 @@ public class PacketRouting {
 	}
 	
 	public void loop() {
+		// A bunch of new requests arrive
+		
 		filter();
+		requestMigration();
 		
 		for(Request req: request) {
 			if(req.distance() <= lv) {
-				System.out.println("Near request -> Using NEAR routing algorithm");
+				routeNear(req);
 			}
 			else {
 				System.out.println("Far request -> Using IPP and INIT algorithm");
@@ -108,26 +150,43 @@ public class PacketRouting {
 		}
 	}
 	
-	public boolean routeNear(Request req) {
-		ArrayList<Integer> tmp = new ArrayList<Integer>();	// For holding temporal route
+	public void requestMigration() {
+		for(int i=0; i<accepted.size(); i++) {
+			accepted.get(i).move();
+		}
+	}
+	
+	// Packet routing for NEAR type requests
+	private boolean routeNear(Request req) {
+		ArrayList<Integer> tmp = new ArrayList<Integer>();
 		
 		for(int i=0; i<req.distance(); i++) {
-			// TODOOOO
-			// if next vertex has free link capacity go there
-			// else return false, indicating that request is rejected
+			if(vertex.get(req.getSource()+i).getNearC() < c) {
+				tmp.add(1);
+			}
+			else {
+				// Couldn't route packet
+				return false;
+			}
+		}
+		
+		for(int i=0; i<req.distance(); i++) {
+			vertex.get(req.getSource()+i).incNearC();
 		}
 		
 		req.setRoute(tmp);
+		accepted.add(req);
 		
 		return true;
 	}
+	
+	// Initial packet routing for FAR type requests
 	
 	
 ///////////////////////////////////////////////////////////////////////////	
 	public static void main(String[] args) {
 		
-		PacketRouting tmp = new PacketRouting(5000, 10, 10);
+		PacketRouting tmp = new PacketRouting(500, 10, 10);
 		System.out.println("Test");
-
 	}
 }

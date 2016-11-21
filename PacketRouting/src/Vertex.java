@@ -1,19 +1,15 @@
 public class Vertex {
 	
-	int b, c;
 	int t[][];
 	
 	
-	public Vertex(int b, int c) {
-		this.b = b;
-		this.c = c;
-		
+	public Vertex() {		
 		// Matrix to contain parameters regarding load for each class
 		// There are five classes: NEAR and Tj where j=1..4
 		t = new int[5][2];
 		
-		for(int i=0; i<2; i++) {
-			for(int j=0; j<5; j++) {
+		for(int i=0; i<5; i++) {
+			for(int j=0; j<2; j++) {
 				t[i][j] = 0;
 			}
 		}

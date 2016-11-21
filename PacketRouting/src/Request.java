@@ -4,20 +4,18 @@ public class Request {
 	
 	private int source, destination;	// Source and destination vertex
 	private int current;				// Current vertex
-	
-	private boolean over;				// Indicates if the packet has reached its destination
+	private int time;					// The time when the request arrived
 	
 	// Arrays containing the init, sketch and final route for the package
 	private ArrayList<Integer> sketch, init, route;
 	
-	
-	public Request(int source, int destination) {
+	public Request(int source, int destination, int time) {
 		this.source = source;
 		this.destination = destination;
 		
-		current = source;
+		this.time = time;
 		
-		over = false;
+		current = source;
 		
 		init   = new ArrayList<Integer>();
 		route  = new ArrayList<Integer>();
@@ -36,6 +34,14 @@ public class Request {
 		return this.destination;
 	}
 	
+	public int getNextMove() {
+		if(route != null) {
+			return route.get(0);
+		}
+		
+		return -1;
+	}
+	
 	public void move() {
 		int tmp = route.get(0);
 		
@@ -43,17 +49,8 @@ public class Request {
 		
 		if(tmp == 1) {
 			current++;
-			
-			
-			if(current == destination) {
-				over = true;
-			}
 		}
 		
-	}
-
-	public boolean isOver() {
-		return over;
 	}
 	
 	public void setInit(ArrayList<Integer> init) {
@@ -79,6 +76,16 @@ public class Request {
 	public ArrayList<Integer> getRoute() {
 		return this.route;
 	}
-
 	
+	public boolean hasArrived() {
+		return current == destination;
+	}
+	
+	public void setTime(int time) {
+		this.time = time;
+	}
+	
+	public int getTime() {
+		return this.time;
+	}
 }
