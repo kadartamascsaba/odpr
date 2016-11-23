@@ -67,7 +67,7 @@
  \end{itemize}
 \end{frame}
 
-\section{Rács Modell}
+\section{Modell és probléma}
 
 \begin{frame}{Az egyenes modelltől a rácsmodellig}
 	Kiindulunk a már említett modellből és a következő modellt építjük fel:
@@ -80,47 +80,97 @@
 
 \begin{frame}{Az egyenes modelltől a rácsmodellig}
 	\begin{figure}
-		\centering \includegraphics[width=0.6\columnwidth]{Image/grid_network}
-		\caption{\label{fig:grid_network}Rácsos hálózatmodell}
+		\centering \includegraphics[width=0.8\columnwidth]{Image/grid_network}
+		\caption{\label{fig:grid_network}Döntött rácsos hálózatmodell}
 	\end{figure}
 \end{frame}
 
-{
-    \metroset{titleformat frame=smallcaps}
-\begin{frame}{Small caps}
-	This frame uses the \texttt{smallcaps} titleformat.
-
-	\begin{alertblock}{Potential Problems}
-		Be aware, that not every font supports small caps. If for example you typeset your presentation with pdfTeX and the Computer Modern Sans Serif font, every text in smallcaps will be typeset with the Computer Modern Serif font instead.
-	\end{alertblock}
+\begin{frame}{Az egyenes modelltől a rácsmodellig}
+	\begin{figure}
+		\centering \includegraphics[width=1\columnwidth]{Image/grid_network_untilted}
+		\caption{\label{fig:grid_network_untilted}Nem döntött rácsos hálózatmodell}
+	\end{figure}
 \end{frame}
-}
 
-{
-\metroset{titleformat frame=allsmallcaps}
-\begin{frame}{All small caps}
-	This frame uses the \texttt{allsmallcaps} titleformat.
-
-	\begin{alertblock}{Potential problems}
-		As this titleformat also uses smallcaps you face the same problems as with the \texttt{smallcaps} titleformat. Additionally this format can cause some other problems. Please refer to the documentation if you consider using it.
-
-		As a rule of thumb: Just use it for plaintext-only titles.
-	\end{alertblock}
+\begin{frame}{Rács modelltől a vázlat gráfig}
+  Felépítjük a \textit{sketch gráfot}, mely egy durvább megközelítése a rács modellnek. Felépítéséhez úgynevezett \textit{tilingokat} használunk.\newline
+  Tiling
+  \begin{itemize}
+  	\item $ \ell_h \times \ell_v $ részrács, ahol $ \ell_h = \left \lceil \frac{6k}{5c'} \right \rceil $ és $ \ell_v = \left \lceil \frac{6k}{5B'} \right \rceil $ ($ c' = \lfloor c/5 \rfloor $, $ B' = \lfloor B/5 \rfloor $ és $ k = log(1 + 3 \cdot p_{max}) $, ahol a $ p_{max} $ később kifejtjük)
+  	\item $ \phi_x $ és $ \phi_y $ 2 \textit{offset} paraméter segítségével határozzuk meg (($ \phi_x + i \cdot \ell_h, \phi_y + j \cdot \ell_v $), ahol $ i,j \in \mathbb{N} $)
+  \end{itemize}
+  A cikk által feldolgozott algoritmus 4 offsetet használ $ (\phi_x, \phi_y) \in \left\lbrace -\ell_h/2.0 \right\rbrace \times \left\lbrace -\ell_v/2.0 \right\rbrace $, ezeket nevezzük $ T_1, \dots, T_4 $-nek.
 \end{frame}
-}
 
-{
-\metroset{titleformat frame=allcaps}
-\begin{frame}{All caps}
-	This frame uses the \texttt{allcaps} titleformat.
-
-	\begin{alertblock}{Potential Problems}
-		This titleformat is not as problematic as the \texttt{allsmallcaps} format, but basically suffers from the same deficiencies. So please have a look at the documentation if you want to use it.
-	\end{alertblock}
+\begin{frame}{Az egyenes modelltől a rácsmodellig}
+	\begin{figure}
+		\centering \includegraphics[width=0.8\columnwidth]{Image/sketch_graph}
+		\caption{\label{fig:sketch_graph}Sketch gráf}
+	\end{figure}
 \end{frame}
-}
 
-\section{Elements}
+\begin{frame}{Sketch gráf}
+  \begin{alertblock}{Definíció}
+	Az $ r_i = (a_i, b_i, t_i) $ kérés $ SW_j $-ben található, ha a forrás vertex $ (a_i, t_i) $ a $ T_j $ csempe délnyugati részéhez tartózik.
+  \end{alertblock}
+  Egy sketch gráfot indukál a $ T_j $, melyet jelöljük $ S_j := (V(S_j), E(S_j)) $, ahol a $ V(S_j) $ egy csempe halmaz a $ T_j $-ből és nekik van $ (s_1, s_2) \in E(S_j) $, ha $ s_1 \neq s_2 $ és $ E^{st} \cap (s_1 \times s_2) \neq \emptyset $. Minden élhez egy egység kapacitást rendelünk.
+\end{frame}
+
+\begin{frame}{Online Packing of Paths}
+  \begin{itemize}
+  	\item A sketch gráfot használjuk fel az \textit{path packing} probléma megoldásához. Intuitíve a path packing modell hasonlít a packet routing modellhez, kivéve hogy ott nincsenek bufferek és hogy minden link $ e $ különböző kapacitással rendelkezik, melyet a következőképpen jelölünk $ c(e) $.
+	\item Formálisan egy kérés a következő alakba írható fel a $ G $ gráfban $ (a_i, D_i) $, ahol $ a_i \in V $ a forrás vertex és a $ D_i \subseteq V $ célrészhalmaz.
+    \item Legyen $ P(r_i) $, mely jelölje azon pathek halmazát, melyek kiszolgálják a $ r_i $ kérést. Minden $ p \in P(r_i) $ az $ a_i $ vertexel kezdődik és a vége a $ D_i $ halmazban található.
+  \end{itemize}
+\end{frame}
+
+\section{Algoritmus}
+
+\begin{frame}{Packet routing algoritmus pszeudokód}
+  \begin{enumerate}
+  	\item Let $ R_t $ be a list of new requests, sorted by source-destination distance.
+  	\item For each vertex $ v $, let $ R'_t(v) $  the first $ B' + c' $ requests in $ R_t $ whose source is $ v $. // filter requests
+  	\item \textbf{for} each request $ r_i \in \cup_v R'_t(v) $ \textbf{do}
+  	\item \quad \textbf{if} $ r_i \in $ \textit{Near} \textbf{then} ROUTE-NEAR($ r_i $)
+  	\item \quad \textbf{else}
+  	\item \quad \quad Let $ j \in \left\lbrace 1,\dots,4 \right\rbrace  $ be s.t. $ r_i \in SW_j $ // classify $ r_i $
+  	\item \quad \quad $ sketch_i \leftarrow $ IPP($ S_j $, $ accepted_j $, $ r_i$) // lengths bounded by $ p_{max} $
+  	\newcounter{enumTemp}
+  	\setcounter{enumTemp}{\theenumi}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Packet routing algoritmus pszeudokód}
+  \begin{enumerate}
+  	\setcounter{enumi}{\theenumTemp}
+  	\item \quad \quad $ init_i \leftarrow $ INITIAL-ROUTE($ accepted_j $ , $ r_i $)
+  	\item \quad \quad \textbf{if} $ sketch_i \neq $ REJECT and $ init_i \neq $ REJECT \textbf{then}
+	\item \quad \quad \quad add $ r_i $ to $ accepted_j $
+	\item \quad \quad \quad DETAILED-ROUTE($ r_i $; $ init_i $; $ sketch_i $) // update routes
+	\item \quad \quad \textbf{else} Reject ri
+	\item \quad \quad \textbf{end if}
+	\item \quad \textbf{end if}
+	\item \textbf{end for}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Kérések rendezése és szűrése}
+\end{frame}
+
+\begin{frame}{Near vagy Far}
+\end{frame}
+
+\begin{frame}{Sketch gráf kiválasztása}
+\end{frame}
+
+\begin{frame}{IPP (Integral Path Packing) algoritmus}
+\end{frame}
+
+\begin{frame}{Initial-Route algoritmus}
+\end{frame}
+
+\begin{frame}{Detailed-Route algoritmus}
+\end{frame}
 
 \begin{frame}[fragile]{Typography}
       \begin{verbatim}The theme provides sensible defaults to
@@ -252,53 +302,6 @@ or show \textbf{bold} results.\end{verbatim}
       \end{exampleblock}
 
   \end{columns}
-\end{frame}
-\begin{frame}{Math}
-  \begin{equation*}
-    e = \lim_{n\to \infty} \left(1 + \frac{1}{n}\right)^n
-  \end{equation*}
-\end{frame}
-\begin{frame}{Line plots}
-  \begin{figure}
-    \begin{tikzpicture}
-      \begin{axis}[
-        mlineplot,
-        width=0.9\textwidth,
-        height=6cm,
-      ]
-
-        \addplot {sin(deg(x))};
-        \addplot+[samples=100] {sin(deg(2*x))};
-
-      \end{axis}
-    \end{tikzpicture}
-  \end{figure}
-\end{frame}
-\begin{frame}{Bar charts}
-  \begin{figure}
-    \begin{tikzpicture}
-      \begin{axis}[
-        mbarplot,
-        xlabel={Foo},
-        ylabel={Bar},
-        width=0.9\textwidth,
-        height=6cm,
-      ]
-
-      \addplot plot coordinates {(1, 20) (2, 25) (3, 22.4) (4, 12.4)};
-      \addplot plot coordinates {(1, 18) (2, 24) (3, 23.5) (4, 13.2)};
-      \addplot plot coordinates {(1, 10) (2, 19) (3, 25) (4, 15.2)};
-
-      \legend{lorem, ipsum, dolor}
-
-      \end{axis}
-    \end{tikzpicture}
-  \end{figure}
-\end{frame}
-\begin{frame}{Quotes}
-  \begin{quote}
-    Veni, Vidi, Vici
-  \end{quote}
 \end{frame}
 
 {%
