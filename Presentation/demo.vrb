@@ -1,9 +1,15 @@
-\frametitle{Backup slides}
-Sometimes, it is useful to add slides at the end of your presentation to
-  refer to during audience questions.
+\frametitle{Modell}
 
-  The best way to do this is to include the \verb|appendixnumberbeamer|
-  package in your preamble and call \verb|\appendix| before your backup slides.
+  Modellje:
+  \begin{itemize}
+  	\item $ G = \left( V, E \right) $ irányított gráf
+  	\item $ B $ buffer méret, $ c $ élek kapacitása, ahol $ B, c > 0 $
+  \end{itemize}
 
-  \themename will automatically turn off slide numbering and progress bars for
-  slides in the appendix.
+  A hálózat topológiája irányított egyenes, amely $ n $ vertexből áll $ V = \left\lbrace v_0, v_1,\dots,v_{n-1} \right\rbrace, E = \left\lbrace \left( v_{i-1}, v_i \right) | \ 0 < i < n \right\rbrace $
+
+  \begin{figure}[c]
+  	\centering \includegraphics[width=1\columnwidth]{Image/linear_network}
+  	\caption{\label{fig:linear_network}Lineáris hálózatmodell}
+  \end{figure}
+
