@@ -1,30 +1,46 @@
 \begin{thebibliography}{1}
 
-\bibitem{Er01}
-P.~Erd{\H o}s.
-\newblock A selection of problems and results in combinatorics.
-\newblock In {\em Recent trends in combinatorics (Matrahaza, 1995)}, pages
-  1--6. Cambridge Univ. Press, Cambridge, 1995.
+\bibitem{even2015better}
+Guy Even, Moti Medina, and Boaz Patt-Shamir.
+\newblock Better online deterministic packet routing on grids.
+\newblock {\em arXiv preprint arXiv:1501.06140}, 2015.
 
-\bibitem{ConcreteMath}
-R.~Graham, D.~Knuth, and O.~Patashnik.
-\newblock {\em Concrete mathematics}.
-\newblock Addison-Wesley, Reading, MA, 1989.
+\bibitem{even2016}
+Guy Even and Moti Medina.
+\newblock Online packet-routing in grids with bounded buffers.
+\newblock {\em Algorithmica}, pages 1--50, 2016.
 
-\bibitem{greenwade93}
-G.~D. Greenwade.
-\newblock The {C}omprehensive {T}ex {A}rchive {N}etwork ({CTAN}).
-\newblock {\em TUGBoat}, 14(3):342--351, 1993.
+\bibitem{buchbinder2006improved}
+Niv Buchbinder and Joseph Naor.
+\newblock Improved bounds for online routing and packing via a primal-dual
+  approach.
+\newblock 2006.
 
-\bibitem{knuth92}
-D.~Knuth.
-\newblock Two notes on notation.
-\newblock {\em Amer. Math. Monthly}, 99:403--422, 1992.
+\bibitem{even2010logn}
+Guy Even and Moti Medina.
+\newblock An o (logn)-competitive online centralized randomized packet-routing
+  algorithm for lines.
+\newblock pages 139--150, 2010.
 
-\bibitem{Simpson}
-H.~Simpson.
-\newblock Proof of the {R}iemann {H}ypothesis.
-\newblock preprint (2003), available at
-  \texttt{http://www.math.drofnats.edu/riemann.ps}, 2003.
+\bibitem{even2011online}
+Guy Even and Moti Medina.
+\newblock Online packet-routing in grids with bounded buffers.
+\newblock pages 215--224, 2011.
+
+\bibitem{evenM14}
+Moti~Medina Guy~Even.
+\newblock Online packet-routing in grids with bounded buffers.
+\newblock abs/1407.4498, 2014.
+
+\bibitem{angelov2009network}
+Stanislav Angelov, Sanjeev Khanna, and Keshav Kunal.
+\newblock The network as a storage device: Dynamic routing with bounded
+  buffers.
+\newblock {\em Algorithmica}, 55(1):71--94, 2009.
+
+\bibitem{azar2005packet}
+Yossi Azar and Rafi Zachut.
+\newblock Packet routing and information gathering in lines, rings and trees.
+\newblock pages 484--495, 2005.
 
 \end{thebibliography}

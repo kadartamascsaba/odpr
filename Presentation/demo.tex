@@ -32,7 +32,7 @@
 
 \begin{frame}[fragile]{Modell}
 
-  Modellje:
+  Hálózatunkat a következő modellel írjuk le, melyet \cite{even2015better} cikk alapján építjük fel:
   \begin{itemize}
   	\item $ G = \left( V, E \right) $ irányított gráf
   	\item $ B $ buffer méret, $ c $ élek kapacitása, ahol $ B, c > 0 $
@@ -81,14 +81,14 @@
 \begin{frame}{Az egyenes modelltől a rácsmodellig}
 	\begin{figure}
 		\centering \includegraphics[width=0.8\columnwidth]{Image/grid_network}
-		\caption{\label{fig:grid_network}Döntött rácsos hálózatmodell}
+		\caption{\label{fig:grid_network}Döntött rácsos hálózatmodell \cite{even2016}}
 	\end{figure}
 \end{frame}
 
 \begin{frame}{Az egyenes modelltől a rácsmodellig}
 	\begin{figure}
 		\centering \includegraphics[width=1\columnwidth]{Image/grid_network_untilted}
-		\caption{\label{fig:grid_network_untilted}Nem döntött rácsos hálózatmodell}
+		\caption{\label{fig:grid_network_untilted}Nem döntött rácsos hálózatmodell \cite{even2016}}
 	\end{figure}
 \end{frame}
 
@@ -167,7 +167,7 @@
 \end{frame}
 
 \begin{frame}{IPP (Integral Path Packing) algoritmus}
-	Az IPP algoritmus vagy elutasítja a $ r_i $ kérést, vagy egy utat ad vissza egy csempék egy szekvenciáján a kezdő csempéből a cél csempébe.
+	Az IPP algoritmus \cite{buchbinder2006improved} vagy elutasítja a $ r_i $ kérést, vagy egy utat ad vissza egy csempék egy szekvenciáján a kezdő csempéből a cél csempébe.
 	\begin{figure}
 		\centering \includegraphics[width=0.55\columnwidth]{Image/ipp}
 		\caption{\label{fig:ipp}IPP algoritmus}
@@ -220,24 +220,24 @@
 \section{Konklúzió}
 
 \begin{frame}{Összefoglaló}
-
-
-\end{frame}
-
-\begin{frame}{Tables}
-	\begin{table}
-		\caption{Largest cities in the world (source: Wikipedia)}
-		\begin{tabular}{lr}
-			\toprule
-			City & Population\\
-			\midrule
-			Mexico City & 20,116,842\\
-			Shanghai & 19,210,000\\
-			Peking & 15,796,450\\
-			Istanbul & 14,160,467\\
-			\bottomrule
-		\end{tabular}
-	\end{table}
+  Bemutattunk egy determinisztikus packet routing algoritmust, mely megoldott egy nyitott kérdést, de számos más kérdés még mindig nyitva hagyott. Például, hogy mi történik nem centralizált esetben?
+  \begin{table}
+  	\begin{tabular}{ c c c c c }
+  		\toprule
+  		Ref. & Dim. & Comp. Ratio & Determ? & $ B, c $ \\
+  		\midrule
+  			\cite{even2010logn, even2011online, evenM14} & 1 & $ O(log(n)) $ & Yes & $ B, c > log n, B/c = n^{O(1)} $ \\
+  			\cite{angelov2009network} & 1 & $ O(log^3(n)) $ & No & $ B \geq 2, c = 1 $ \\
+			\cite{azar2005packet} & 1 & $ O(log^2(n)) $ & No & $ B \geq 2, c = 1 $ \\
+			\cite{even2010logn, evenM14} & 1 & $ O(log(n)) $ & No & $ B \in [1, log n], c \geq 1 $ \\
+			\cite{even2011online, evenM14} & 1 & $ O(log^5(n)) $ & Yes & $ [3, O(log n)] $ \\
+			\cite{even2011online, evenM14} & d & $ O(log^{d+4}(n)) $ & Yes & $ [5, O(log n)] $ \\
+			\hline
+			\cite{even2015better} & 1 & $ O(log(n)) $ & Yes & $ [5, O(log n)] $ \\
+		\bottomrule
+	\end{tabular}
+	\caption{Összehasonlítás más algoritmusokkal}
+  \end{table}
 \end{frame}
 
 \appendix
@@ -245,7 +245,7 @@
 \begin{frame}[allowframebreaks]{References}
 	
 	\bibliography{demo}
-	\bibliographystyle{abbrv}
+	\bibliographystyle{unsrt}
 	
 \end{frame}
 

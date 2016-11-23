@@ -1,6 +1,6 @@
 \frametitle{Modell}
 
-  Modellje:
+  Hálózatunkat a következő modellel írjuk le, melyet \cite{even2015better} cikk alapján építjük fel:
   \begin{itemize}
   	\item $ G = \left( V, E \right) $ irányított gráf
   	\item $ B $ buffer méret, $ c $ élek kapacitása, ahol $ B, c > 0 $

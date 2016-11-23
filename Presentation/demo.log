@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.10.23)  23 NOV 2016 23:30
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (MiKTeX 2.9 64-bit) (preloaded format=pdflatex 2016.10.23)  24 NOV 2016 01:29
 entering extended mode
 **./demo.tex
 (demo.tex
@@ -1523,7 +1523,7 @@ LaTeX Font Warning: Font shape `OMS/cmss/m/n' undefined
 (Font)              using `OMS/cmsy/m/n' instead
 (Font)              for symbol `textbullet' on input line 5.
 
-<Image/linear_network.pdf, id=61, 227.62204pt x 56.90552pt>
+<Image/linear_network.pdf, id=62, 227.62204pt x 56.90552pt>
 File: Image/linear_network.pdf Graphic file (type pdf)
 
 <use Image/linear_network.pdf>
@@ -1532,6 +1532,10 @@ Package pdftex.def Info: Image/linear_network.pdf used on input line 12.
 )
 Overfull \hbox (0.4pt too wide) in paragraph at lines 48--48
 [][]  
+ []
+
+
+Overfull \vbox (1.31665pt too high) detected at line 48
  []
 
 [4
@@ -1552,7 +1556,7 @@ Overfull \hbox (0.4pt too wide) in paragraph at lines 79--79
 
 [7
 
-] <Image/grid_network.png, id=99, 478.78876pt x 316.93407pt>
+] <Image/grid_network.png, id=101, 478.78876pt x 316.93407pt>
 File: Image/grid_network.png Graphic file (type png)
 
 <use Image/grid_network.png>
@@ -1566,7 +1570,7 @@ Overfull \hbox (0.4pt too wide) in paragraph at lines 86--86
 [8
 
  <./Image/grid_network.png>]
-<Image/grid_network_untilted.png, id=108, 725.71124pt x 321.45094pt>
+<Image/grid_network_untilted.png, id=112, 725.71124pt x 321.45094pt>
 File: Image/grid_network_untilted.png Graphic file (type png)
 
 <use Image/grid_network_untilted.png>
@@ -1587,7 +1591,7 @@ Overfull \hbox (0.4pt too wide) in paragraph at lines 103--103
 
 [10
 
-] <Image/sketch_graph.pdf, id=124, 213.39566pt x 142.26378pt>
+] <Image/sketch_graph.pdf, id=129, 213.39566pt x 142.26378pt>
 File: Image/sketch_graph.pdf Graphic file (type pdf)
 
 <use Image/sketch_graph.pdf>
@@ -1646,7 +1650,7 @@ Overfull \hbox (0.4pt too wide) in paragraph at lines 167--167
 
 [18
 
-] <Image/ipp.pdf, id=181, 369.88583pt x 341.43306pt>
+] <Image/ipp.pdf, id=187, 369.88583pt x 341.43306pt>
 File: Image/ipp.pdf Graphic file (type pdf)
  <use Image/ipp.pdf>
 Package pdftex.def Info: Image/ipp.pdf used on input line 175.
@@ -1686,33 +1690,33 @@ Overfull \hbox (0.4pt too wide) in paragraph at lines 218--218
 ] [23
 
 ]
-Overfull \hbox (0.4pt too wide) in paragraph at lines 225--225
-[][]  
+Overfull \hbox (4.03311pt too wide) in paragraph at lines 241--241
+ [] 
  []
 
-[24
 
-]
 Overfull \hbox (0.4pt too wide) in paragraph at lines 241--241
 [][]  
  []
 
-[25
+
+Overfull \vbox (1.21298pt too high) detected at line 241
+ []
+
+[24
 
 ]
 
 Package hyperref Warning: Token not allowed in a PDF string (PDFDocEncoding):
 (hyperref)                removing `\translate ' on input line 243.
 
-(demo.bbl
-
-LaTeX Font Warning: Font shape `OT1/cmss/bx/it' undefined
-(Font)              using `OT1/cmss/bx/n' instead on input line 11.
-
-) [26
+(demo.bbl) [25
 
  <C:/Program Files/MiKTeX 2.9/tex/latex/beamer/base/art/beamericonarticle.pdf>]
- [27
+ [26
+
+
+] [27
 
 
 ] [28
@@ -1747,11 +1751,11 @@ LaTeX Font Warning: Some font shapes were not available, defaults substituted.
 Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 260.
  ) 
 Here is how much of TeX's memory you used:
- 31102 strings out of 493334
- 750316 string characters out of 3139248
- 963814 words of memory out of 3000000
- 33892 multiletter control sequences out of 15000+200000
- 10309 words of font info for 38 fonts, out of 3000000 for 9000
+ 31108 strings out of 493334
+ 750551 string characters out of 3139248
+ 964813 words of memory out of 3000000
+ 33896 multiletter control sequences out of 15000+200000
+ 10141 words of font info for 37 fonts, out of 3000000 for 9000
  1141 hyphenation exceptions out of 8191
  71i,13n,98p,1752b,867s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Pr
@@ -1766,11 +1770,10 @@ mssi8.pfb><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy10.pf
 b><C:/Program Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy5.pfb><C:/Pro
 gram Files/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy7.pfb><C:/Program File
 s/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmsy9.pfb><C:/Program Files/MiKTeX 
-2.9/fonts/type1/public/amsfonts/cm/cmtt10.pfb><C:/Program Files/MiKTeX 2.9/font
-s/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on demo.pdf (29 pages, 304144 bytes).
+2.9/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on demo.pdf (29 pages, 297888 bytes).
 PDF statistics:
- 328 PDF objects out of 1000 (max. 8388607)
- 74 named destinations out of 1000 (max. 500000)
+ 343 PDF objects out of 1000 (max. 8388607)
+ 77 named destinations out of 1000 (max. 500000)
  108 words of extra memory for PDF output out of 10000 (max. 10000000)
 
