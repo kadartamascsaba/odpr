@@ -1,8 +1,10 @@
+
 public class Tiling {
 
 	int n;					// Vertex number
 	int lv, lh;				// Tile length and width
 	int offsetX, offsetY; 	// Offset parameters for Tiling j
+	int multiplier;
 	
 	Tile s;					// The most bottom-left tile of tiling
 	
@@ -16,6 +18,11 @@ public class Tiling {
 		
 		this.offsetX = offsetX;
 		this.offsetY = offsetY;
+		
+		multiplier = (-n/lh) - 2;
+		for(int i=multiplier; i<0; i++) {
+			addColumn();
+		}
 	}	
 	
 	// Adds a new column of tiles to the tiling 
@@ -23,10 +30,10 @@ public class Tiling {
 		Tile tmp;
 		
 		if(s == null) {
-			s = new Tile(offsetX, offsetY);
+			s = new Tile(offsetX, offsetY + multiplier*lh);
 			tmp = s;
-			for(int i = 1; i<(n/lv)+1; i++) {
-				tmp.setN(new Tile(offsetX + i*lv, offsetY));
+			for(int i = 1; i<(n/lv)+2; i++) {
+				tmp.setN(new Tile(offsetX + i*lv, offsetY + multiplier*lh));
 				tmp = tmp.getN();
 			}
 		}
@@ -35,13 +42,14 @@ public class Tiling {
 			while(tmp.getW() != null) {
 				tmp = tmp.getW();
 			}
-			tmp.setW(new Tile(offsetX, offsetY + getTilingWidth()*lh));
+			tmp.setW(new Tile(offsetX, offsetY + multiplier*lh));
 			tmp = tmp.getW();
-			for(int i = 1; i<(n/lv)+1; i++) {
-				tmp.setN(new Tile(offsetX + i*lv, offsetY + getTilingWidth()*lh));
+			for(int i = 1; i<(n/lv)+2; i++) {
+				tmp.setN(new Tile(offsetX + i*lv, offsetY + multiplier*lh));
 				tmp = tmp.getN();
 			};			
-		}
+		} 
+		multiplier++;
 	}
 	
 	// Slides the tiling window by one tile column
@@ -88,7 +96,20 @@ public class Tiling {
 		
 		return width;
 	}
+	
+	public int getMostLeftColumn() {
+		return s.getY();
+	}
 
+	public int getMostRightColumn() {
+		Tile tmp = s;
+		while(tmp.getW() != null) {
+			tmp = tmp.getW();
+		}
+		
+		return tmp.getY() + lh;
+	}
+	
 	// Returns the tile in which the request is in the SW quadrant 
 	public Tile getSWTile(Request req) {
 		int x, y;
@@ -96,23 +117,29 @@ public class Tiling {
 		x = req.getSource();
 		y = req.getTime() - req.getSource();
 		
-		// Request is in the SW quadrant
-		if(y >= s.getY() && y < s.getY() + lh/2) {
-			Tile tmp = s;
-			boolean found = false;
-			while(!found && tmp != null) {
-				if(x >= tmp.getX() && x<tmp.getX() + lv/2) {
-					found = true;
-				}
-				else {
-					tmp = tmp.getN();
-				}
+		Tile tmp = s;
+		boolean found = false;
+		
+		while(!found && tmp != null) {
+			if(y >= tmp.getY() && y < tmp.getY() + lh/2) {
+				found = true;
 			}
-			
-			return tmp;
+			else {
+				tmp = tmp.getW();
+			}
 		}
-		else {
-			return null;
+		
+		found = false;
+		while(!found && tmp != null) {
+			if(x >= tmp.getX() && x < tmp.getX() + lv/2) {
+				found = true;
+			}
+			else {
+				tmp = tmp.getN();
+			}
 		}
+		
+		
+		return tmp;
 	}
 }
