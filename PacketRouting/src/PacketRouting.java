@@ -42,7 +42,6 @@ public class PacketRouting {
 		request.add(new Request(source, destination, time));
 	}
 	
-	
 	public void loop() {
 		// A bunch of new requests arrive
 		filter();
@@ -59,7 +58,8 @@ public class PacketRouting {
 				}
 			}
 			else {
-				init = initRoute(req);	// Reject req if init is empty
+				init = initRoute(req);	// Reject request if init is empty
+				sketch = integralPathPacking(req); // If return value is empty then request rejected
 				System.out.println("Far request -> Using IPP and INIT algorithm");
 			}
 		}
@@ -137,6 +137,46 @@ public class PacketRouting {
 		}
 		
 		return path;
+	}
+	
+	// Integral path routing for FAR type requests
+	// Returns an array of integers
+	// 0 means hold (go EAST)
+	// 1 means send (go NORTH)
+	// If the array is empty then request is rejected
+	private ArrayList<Integer> integralPathPacking(Request req) {
+		int source, destination, tilingNumber;
+		Tiling tmp;
+		
+		source = req.getTime() - req.getSource();
+		destination = req.getDestination();
+		
+		tilingNumber = getTilingNumber(req);
+	
+		tmp = tilings.get(tilingNumber);
+		
+		ArrayList<Integer> path = new ArrayList<Integer>();
+		
+		getIPPpath(tmp.getTileIndex(source), tmp.getTileIndex(destination), tilingNumber, path);
+		
+		if (path.size() > pmax) {
+			return new ArrayList<Integer>();
+		}
+		
+		return path;
+	}
+	
+	private void getIPPpath(int start, int dest, int tilingNumber, ArrayList<Integer> path) {
+		
+		if (start != dest) {
+			if (path.size() > pmax) {
+				
+			}
+			else {
+				
+			}
+		}
+		
 	}
 	
 	// Initialize parameters
