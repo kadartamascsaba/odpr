@@ -155,15 +155,22 @@
 \end{frame}
 
 \begin{frame}{Kérések rendezése és szűrése}
+	Az algoritmus hatékonyságának növelése érdekében a $t$ időben érkező kéréseket megszűrjük a következő módón:
+	\begin{itemize}
+		\item $ R_t = t $ időben érkezett kérések
+		\item $R_t' = $ kérések kezdőpont-végpont közötti távolság szerint rendezve
+		\item input = minden $v$ csomópont esetében az első $B' + C'$ kérés $R_t'$-ből, ahol a kérés kezdőpontja $v$
+	\end{itemize}
+	
 \end{frame}
 
 \begin{frame}{Near vagy Far}
-  Minden kérésre eldöntjük:
+  A kéréseket két csoportba soroljuk:
   \begin{itemize}
-  	\item near kérés, az az 
-  	\item far kérés, amelyet
+  	\item NEAR kérés, abban az esetben ha a kezdőpont és a végpont is egy csempében vannak, vagyis $b_i - a_i \leq l_v$
+  	\item FAR kérés, ha a kérés két végpontja különböző csempékbe tartozik
   \end{itemize}
-  Amennyiben far kérésről van szó, kiválasztjuk a megfelelő sketch gráfot aminek a SW kvadrantjába esik ez az $ r_i $ request.
+  Amennyiben FAR kérésről van szó, kiválasztjuk a megfelelő sketch gráfot aminek a SW kvadrantjába esik ez az $ r_i $ request.
 \end{frame}
 
 \begin{frame}{IPP (Integral Path Packing) algoritmus}
@@ -175,9 +182,23 @@
 \end{frame}
 
 \begin{frame}{Initial-Route algoritmus}
+	Az Initial-Route algoritmus egy FAR típusú kérés esetében hajtódik végre.
+	
+	Célja hogy egy egyenes mentén a kérést továbbítsa egy $s$ csempe SW negyedéből.
+	
+	Ha nem tudtuk egy egyenes mentén megtenni, csak tárolással vagy továbbküldéssel, a kérést eldobjuk
+\end{frame}
+
+\begin{frame}{Csomag eldobása}
+	Egy FAR típusú kérést csak az IPP és az Initial-Route algoritmusok dobhatnak el.
+	
+	Ha mindkét algoritmus megtartotta $r_i$-t akkor biztosak lehetünk hogy a csomag eljut a kezdőpontból a végpontba.
 \end{frame}
 
 \begin{frame}{Detailed-Route algoritmus}
+	Céja hogy az előző két algoritmus eredményeit felhasználva meghatározza a tényleges utat $G^{st}$-ben.
+	
+	Megjegyezzük hogy a leképezés során biztosak lehetünk, hogy lesz szabad út a kezdőpont és a végpont között.
 \end{frame}
 
 \begin{frame}{Blocks}
