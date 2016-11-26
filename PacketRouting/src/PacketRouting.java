@@ -13,6 +13,7 @@ public class PacketRouting {
 	int totalRequestNumber;		// Number of request in the algorithm
 	int deliveredRequestNumber; // Number of delivered requests
 	
+	private boolean foundPath = false;
 	
 	PriorityQueue<Request> request; // Holding incoming request in a time slot
 	
@@ -171,19 +172,25 @@ public class PacketRouting {
 	private void getIPPpath(int start, int dest, int tilingNumber, Tile tile, ArrayList<Integer> path, double alpha) {
 		
 		if (start != dest) {
-			if ((alpha + tile.getXn()) < 1) {
+			if (((alpha + tile.getXn()) < 1) && (!foundPath)) {
 				path.add(1);
 				getIPPpath(start + 1, dest, tilingNumber, tile.getN(), path, alpha + tile.getXn());
-				path.remove(path.size() - 1);
+				if (!foundPath) {
+					path.remove(path.size() - 1);
+					alpha = alpha - tile.getXn();
+				}
 			}
-			else if ((alpha + tile.getXw()) < 1) {
+			if (((alpha + tile.getXw()) < 1) && (!foundPath)) {
 				path.add(0);
 				getIPPpath(start + 1, dest, tilingNumber, tile.getW(), path, alpha + tile.getXw());
-				path.remove(path.size() - 1);
+				if (!foundPath) {
+					path.remove(path.size() - 1);
+					alpha = alpha - tile.getXw();
+				}
 			}
 		}
 		else {
-			
+			foundPath = true;
 		}
 		
 	}
