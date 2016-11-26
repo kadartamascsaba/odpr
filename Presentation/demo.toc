@@ -1,5 +1,5 @@
 \beamer@endinputifotherversion {3.36pt}
 \beamer@sectionintoc {1}{Bevezet\IeC {\'e}s}{3}{0}{1}
 \beamer@sectionintoc {2}{Modell \IeC {\'e}s probl\IeC {\'e}ma}{6}{0}{2}
-\beamer@sectionintoc {3}{Algoritmus}{14}{0}{3}
-\beamer@sectionintoc {4}{Konkl\IeC {\'u}zi\IeC {\'o}}{24}{0}{4}
+\beamer@sectionintoc {3}{Algoritmus}{15}{0}{3}
+\beamer@sectionintoc {4}{Konkl\IeC {\'u}zi\IeC {\'o}}{25}{0}{4}

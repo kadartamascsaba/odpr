@@ -1,12 +1,12 @@
-\frametitle{Modell}
+\frametitle{Alapmodell}
 
-  Hálózatunkat a következő modellel írjuk le, melyet \cite{even2015better} cikk alapján építjük fel:
+  Hálózatunkat a következő modellel írjuk le, melyet \cite{even2015better} cikk alapján építünk fel:
   \begin{itemize}
   	\item $ G = \left( V, E \right) $ irányított gráf
-  	\item $ B $ buffer méret, $ c $ élek kapacitása, ahol $ B, c > 0 $
+  	\item $ B $ bufferméret, $ c $ élek kapacitása, ahol $ B, c > 0 $
   \end{itemize}
 
-  A hálózat topológiája irányított egyenes, amely $ n $ vertexből áll $ V = \left\lbrace v_0, v_1,\dots,v_{n-1} \right\rbrace, E = \left\lbrace \left( v_{i-1}, v_i \right) | \ 0 < i < n \right\rbrace $
+  A hálózat topológiája irányított lineáris gráf, amely $ n $ vertexből áll $ V = \left\lbrace v_0, v_1,\dots,v_{n-1} \right\rbrace, E = \left\lbrace \left( v_{i-1}, v_i \right) | \ 0 < i < n \right\rbrace $
 
   \begin{figure}[c]
   	\centering \includegraphics[width=1\columnwidth]{Image/linear_network}

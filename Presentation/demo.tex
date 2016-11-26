@@ -30,15 +30,15 @@
 
 \section{Bevezetés}
 
-\begin{frame}[fragile]{Modell}
+\begin{frame}[fragile]{Alapmodell}
 
-  Hálózatunkat a következő modellel írjuk le, melyet \cite{even2015better} cikk alapján építjük fel:
+  Hálózatunkat a következő modellel írjuk le, melyet \cite{even2015better} cikk alapján építünk fel:
   \begin{itemize}
   	\item $ G = \left( V, E \right) $ irányított gráf
-  	\item $ B $ buffer méret, $ c $ élek kapacitása, ahol $ B, c > 0 $
+  	\item $ B $ bufferméret, $ c $ élek kapacitása, ahol $ B, c > 0 $
   \end{itemize}
 
-  A hálózat topológiája irányított egyenes, amely $ n $ vertexből áll $ V = \left\lbrace v_0, v_1,\dots,v_{n-1} \right\rbrace, E = \left\lbrace \left( v_{i-1}, v_i \right) | \ 0 < i < n \right\rbrace $
+  A hálózat topológiája irányított lineáris gráf, amely $ n $ vertexből áll $ V = \left\lbrace v_0, v_1,\dots,v_{n-1} \right\rbrace, E = \left\lbrace \left( v_{i-1}, v_i \right) | \ 0 < i < n \right\rbrace $
 
   \begin{figure}[c]
   	\centering \includegraphics[width=1\columnwidth]{Image/linear_network}
@@ -50,15 +50,15 @@
 \begin{frame}{Kérés (Request)}
   A kérést egy számhármassal adhatjuk meg, $ r = \left(a_i, b_i, t_i \right)  $
   \begin{itemize}
-  	\item $ a_i $ a forrás csomópont
-  	\item $ b_i $ a cél csomópont
-  	\item $ t_i $ az időpont amikor a kérés érkezik
+  	\item $ a_i $ a forráscsomópont
+  	\item $ b_i $ a célcsomópont
+  	\item $ t_i $ az időpont, amikor a kérés érkezik
   \end{itemize}
  , ahol $ a_i, b_i \in V, t_i \in \mathbb{N} $\newline
- Minden time stepben, a routing algoritmus:
+ Minden time stepben a routing algoritmus:
  \begin{itemize}
  	\item törli a célba érkezett csomagokat
- 	\item minden más csomagra, beleértve az éppen beérkezőket is eldönti, hogy:
+ 	\item minden más csomagra, beleértve az éppen beérkezőket is, eldönti, hogy:
 	 \begin{itemize}
 	 	\item törli
 	 	\item tárolja az aktuális csomópont bufferjében
@@ -69,58 +69,65 @@
 
 \section{Modell és probléma}
 
-\begin{frame}{Az egyenes modelltől a rácsmodellig}
+\begin{frame}{A lineáris modelltől a rácsmodellig}
 	Kiindulunk a már említett modellből és a következő modellt építjük fel:
 	\begin{itemize}
 		\item 
-		$ G^{st} = \left( V^{st}, E^{st} \right) $ irányított aciklikus végtelen gráf, amiben $ c^{st}\left(e \right) $ az élek kapacitása. $ V^{st} := V \times \mathbb{N} $, ahol minden $ v \in V $ vertexnek végtelen számú másolata van a $ G^{st} $-ben, melyet a $ \left( v, t\right) \in V^{st} $ azonosít. $ E^{st} := E_0 \cup E_1 $, ahol az $ E_0 $ tartalmazza a csomópontok közötti éleket, melyek $ c $ kapacitással rendelkeznek és a $ E_1 $ a ugyanazon csomópont time steppek közötti élét tartalmazza, mely kapacitása $ B $
- 		\item  a kérés a következőképpen alakul $ r_i^{st} = \left( \left( a_i, t_i\right) , row(b_i)\right) $, ahol a $ row(b_i) $, a cél csomópont sorát jelöli
+		$ G^{st} = \left( V^{st}, E^{st} \right) $ irányított aciklikus végtelen gráf, amiben $ c^{st}\left(e \right) $ az élek kapacitása. $ V^{st} := V \times \mathbb{N} $, ahol minden $ v \in V $ vertexnek végtelenszámú másolata van a $ G^{st} $-ben, melyet a $ \left( v, t\right) \in V^{st} $ azonosít. $ E^{st} := E_0 \cup E_1 $, ahol az $ E_0 $ tartalmazza a csomópontok közötti éleket, melyek $ c $ kapacitással rendelkeznek és az $ E_1 $ az ugyanazon csomópont time steppek közötti élét tartalmazza, mely kapacitása $ B $
+ 		\item  a kérés a következőképpen alakul $ r_i^{st} = \left( \left( a_i, t_i\right) , row(b_i)\right) $, ahol a $ row(b_i) $ a célcsomópont sorát jelöli
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Az egyenes modelltől a rácsmodellig}
+\begin{frame}{A lineáris modelltől a rácsmodellig}
 	\begin{figure}
 		\centering \includegraphics[width=0.8\columnwidth]{Image/grid_network}
 		\caption{\label{fig:grid_network}Döntött rácsos hálózatmodell \cite{even2016}}
 	\end{figure}
 \end{frame}
 
-\begin{frame}{Az egyenes modelltől a rácsmodellig}
+\begin{frame}{A lineáris modelltől a rácsmodellig}
 	\begin{figure}
 		\centering \includegraphics[width=1\columnwidth]{Image/grid_network_untilted}
 		\caption{\label{fig:grid_network_untilted}Nem döntött rácsos hálózatmodell \cite{even2016}}
 	\end{figure}
 \end{frame}
 
-\begin{frame}{Rács modelltől a vázlat gráfig}
-  Felépítjük a \textit{sketch gráfot}, mely egy durvább megközelítése a rács modellnek. Felépítéséhez úgynevezett \textit{tilingokat} használunk.\newline
+\begin{frame}{Rácsmodelltől a vázlatgráfig}
+  Felépítjük a \textit{sketch gráfot}, mely egy durvább megközelítése a rácsmodellnek. Felépítéséhez úgynevezett \textit{tilingokat} használunk.\newline
   Tiling
   \begin{itemize}
-  	\item $ \ell_h \times \ell_v $ részrács, ahol $ \ell_h = \left \lceil \frac{6k}{5c'} \right \rceil $ és $ \ell_v = \left \lceil \frac{6k}{5B'} \right \rceil $ ($ c' = \lfloor c/5 \rfloor $, $ B' = \lfloor B/5 \rfloor $ és $ k = log(1 + 3 \cdot p_{max}) $, ahol a $ p_{max} $ később kifejtjük)
+  	\item $ \ell_h \times \ell_v $ részrács, ahol $ \ell_h = \left \lceil \frac{6k}{5c'} \right \rceil $ és $ \ell_v = \left \lceil \frac{6k}{5B'} \right \rceil $ ($ c' = \lfloor c/5 \rfloor $, $ B' = \lfloor B/5 \rfloor $ és $ k = log(1 + 3 \cdot p_{max}) $)
   	\item $ \phi_x $ és $ \phi_y $ 2 \textit{offset} paraméter segítségével határozzuk meg (($ \phi_x + i \cdot \ell_h, \phi_y + j \cdot \ell_v $), ahol $ i,j \in \mathbb{N} $)
   \end{itemize}
-  A cikk által feldolgozott algoritmus 4 offsetet használ $ (\phi_x, \phi_y) \in \left\lbrace -\ell_h/2.0 \right\rbrace \times \left\lbrace -\ell_v/2.0 \right\rbrace $, ezeket nevezzük $ T_1, \dots, T_4 $-nek.
+  A cikk által feldolgozott algoritmus alapján négy tilingot hozunk létre, $ (\phi_x, \phi_y) \in \left\lbrace -\ell_h/2.0 \right\rbrace \times \left\lbrace -\ell_v/2.0 \right\rbrace $, ezeket nevezzük $ T_1, \dots, T_4 $-nek.
 \end{frame}
 
-\begin{frame}{Az egyenes modelltől a rácsmodellig}
+\begin{frame}{Rácsmodelltől a vázlatgráfig}
 	\begin{figure}
 		\centering \includegraphics[width=0.8\columnwidth]{Image/sketch_graph}
 		\caption{\label{fig:sketch_graph}Sketch gráf}
 	\end{figure}
 \end{frame}
 
+\begin{frame}{Utak a csempében}
+	\begin{figure}
+		\centering \includegraphics[width=0.55\columnwidth]{Image/tile}
+		\caption{\label{fig:tile}A befele és kifele mutató utak a csempében}
+	\end{figure}
+\end{frame}
+
 \begin{frame}{Sketch gráf}
   \begin{alertblock}{Definíció}
-	Az $ r_i = (a_i, b_i, t_i) $ kérés $ SW_j $-ben található, ha a forrás vertex $ (a_i, t_i) $ a $ T_j $ csempe délnyugati részéhez tartózik.
+	Az $ r_i = (a_i, b_i, t_i) $ kérés $ SW_j $-ben található, ha a forrásvertex $ (a_i, t_i) $ a $ T_j $ csempe délnyugati részéhez tartozik.
   \end{alertblock}
-  Egy sketch gráfot indukál a $ T_j $, melyet jelöljük $ S_j := (V(S_j), E(S_j)) $, ahol a $ V(S_j) $ egy csempe halmaz a $ T_j $-ből és nekik van $ (s_1, s_2) \in E(S_j) $, ha $ s_1 \neq s_2 $ és $ E^{st} \cap (s_1 \times s_2) \neq \emptyset $. Minden élhez egy egység kapacitást rendelünk.
+  Egy sketch gráfot indukál a $ T_j $, melyet jelöljük $ S_j := (V(S_j), E(S_j)) $, ahol a $ V(S_j) $ egy csempehalmaz a $ T_j $-ből és amelyhez $ (s_1, s_2) \in E(S_j) $ tartozik, ha $ s_1 \neq s_2 $ és $ E^{st} \cap (s_1 \times s_2) \neq \emptyset $. Minden élhez egy egységkapacitást rendelünk.
 \end{frame}
 
 \begin{frame}{Online Packing of Paths}
   \begin{itemize}
-  	\item A sketch gráfot használjuk fel az \textit{path packing} probléma megoldásához. Intuitíve a path packing modell hasonlít a packet routing modellhez, kivéve hogy ott nincsenek bufferek és hogy minden link $ e $ különböző kapacitással rendelkezik, melyet a következőképpen jelölünk $ c(e) $.
-	\item Formálisan egy kérés a következő alakba írható fel a $ G $ gráfban $ (a_i, D_i) $, ahol $ a_i \in V $ a forrás vertex és a $ D_i \subseteq V $ célrészhalmaz.
-    \item Legyen $ P(r_i) $, mely jelölje azon pathek halmazát, melyek kiszolgálják a $ r_i $ kérést. Minden $ p \in P(r_i) $ az $ a_i $ vertexel kezdődik és a vége a $ D_i $ halmazban található.
+  	\item A sketch gráfot használjuk fel az \textit{path packing} probléma megoldásához. Intuitíve a path packing modell hasonlít a packet routing modellhez, kivéve hogy ott nincsenek bufferek és hogy minden link $ e $ különböző kapacitással rendelkezik, melyet jelöljünk $ c(e) $-vel.
+	\item Formálisan egy kérés $ (a_i, D_i) $ alakban írható fel a $ G $ gráfban $ (a_i, D_i) $, ahol $ a_i \in V $ a forrásvertex és a $ D_i \subseteq V $ célrészhalmaz.
+    \item Jelölje $ P(r_i) $ azon pathek halmazát, melyek kiszolgálják a $ r_i $ kérést. Minden $ p \in P(r_i) $ az $ a_i $ vertexel kezdődik és a vége a $ D_i $ halmazban található.
   \end{itemize}
 \end{frame}
 
@@ -155,10 +162,10 @@
 \end{frame}
 
 \begin{frame}{Kérések rendezése és szűrése}
-	Az algoritmus hatékonyságának növelése érdekében a $t$ időben érkező kéréseket megszűrjük a következő módón:
+	Az algoritmus hatékonyságának növelése érdekében a $t$ időben érkező kéréseket megszűrjük a következő módon:
 	\begin{itemize}
 		\item $ R_t = t $ időben érkezett kérések
-		\item $R_t' = $ kérések kezdőpont-végpont közötti távolság szerint rendezve
+		\item $ R_t' = $ kérések kezdőpont-végpont közötti távolság szerint rendezve
 		\item input = minden $v$ csomópont esetében az első $B' + C'$ kérés $R_t'$-ből, ahol a kérés kezdőpontja $v$
 	\end{itemize}
 	
@@ -167,14 +174,14 @@
 \begin{frame}{Near vagy Far}
   A kéréseket két csoportba soroljuk:
   \begin{itemize}
-  	\item NEAR kérés, abban az esetben ha a kezdőpont és a végpont is egy csempében vannak, vagyis $b_i - a_i \leq l_v$
+  	\item NEAR kérés, abban az esetben ha a kezdőpont és a végpont is egy csempében van, vagyis $b_i - a_i \leq l_v$
   	\item FAR kérés, ha a kérés két végpontja különböző csempékbe tartozik
   \end{itemize}
-  Amennyiben FAR kérésről van szó, kiválasztjuk a megfelelő sketch gráfot aminek a SW kvadrantjába esik ez az $ r_i $ request.
+  Amennyiben FAR kérésről van szó, kiválasztjuk a megfelelő sketch gráfot, aminek a SW kvadrantjába esik ez az $ r_i $ request.
 \end{frame}
 
 \begin{frame}{IPP (Integral Path Packing) algoritmus}
-	Az IPP algoritmus \cite{buchbinder2006improved} vagy elutasítja a $ r_i $ kérést, vagy egy utat ad vissza egy csempék egy szekvenciáján a kezdő csempéből a cél csempébe.
+	Az IPP algoritmus \cite{buchbinder2006improved} vagy elutasítja a $ r_i $ kérést, vagy egy utat ad vissza csempék egy szekvenciáján a kezdőcsempéből a célcsempébe.
 	\begin{figure}
 		\centering \includegraphics[width=0.55\columnwidth]{Image/ipp}
 		\caption{\label{fig:ipp}IPP algoritmus}
@@ -184,64 +191,35 @@
 \begin{frame}{Initial-Route algoritmus}
 	Az Initial-Route algoritmus egy FAR típusú kérés esetében hajtódik végre.
 	
-	Célja hogy egy egyenes mentén a kérést továbbítsa egy $s$ csempe SW negyedéből.
+	Célja, hogy egy egyenes mentén a kérést továbbítsa egy $s$ csempe SW negyedéből.
 	
-	Ha nem tudtuk egy egyenes mentén megtenni, csak tárolással vagy továbbküldéssel, a kérést eldobjuk
+	Ha nem tudtuk egy egyenes mentén megtenni csak tárolással vagy továbbküldéssel, a kérést eldobjuk.
 \end{frame}
 
 \begin{frame}{Csomag eldobása}
 	Egy FAR típusú kérést csak az IPP és az Initial-Route algoritmusok dobhatnak el.
 	
-	Ha mindkét algoritmus megtartotta $r_i$-t akkor biztosak lehetünk hogy a csomag eljut a kezdőpontból a végpontba.
+	Ha mindkét algoritmus megtartotta $r_i$-t, akkor biztosak lehetünk, hogy a csomag eljut a kezdőpontból a végpontba.
 \end{frame}
 
 \begin{frame}{Detailed-Route algoritmus}
-	Céja hogy az előző két algoritmus eredményeit felhasználva meghatározza a tényleges utat $G^{st}$-ben.
+	Céja, hogy az előző két algoritmus eredményeit felhasználva meghatározza a tényleges utat $G^{st}$-ben.
 	
-	Megjegyezzük hogy a leképezés során biztosak lehetünk, hogy lesz szabad út a kezdőpont és a végpont között.
+	Megjegyezzük, hogy a leképezés során biztosak lehetünk, hogy lesz szabad út a kezdőpont és a végpont között.
 \end{frame}
 
-\begin{frame}{Blocks}
-  Three different block environments are pre-defined and may be styled with an
-  optional background color.
-
-  \begin{columns}[T,onlytextwidth]
-    \column{0.5\textwidth}
-      \begin{block}{Default}
-        Block content.
-      \end{block}
-
-      \begin{alertblock}{Alert}
-        Block content.
-      \end{alertblock}
-
-      \begin{exampleblock}{Example}
-        Block content.
-      \end{exampleblock}
-
-    \column{0.5\textwidth}
-
-      \metroset{block=fill}
-
-      \begin{block}{Default}
-        Block content.
-      \end{block}
-
-      \begin{alertblock}{Alert}
-        Block content.
-      \end{alertblock}
-
-      \begin{exampleblock}{Example}
-        Block content.
-      \end{exampleblock}
-
-  \end{columns}
+\begin{frame}{Detailed-Route algoritmus}
+	A nyugatról érkező kérések addig maradnak a bufferben, amíg el nem érjük az átlót, majd eszakra indulnak, míg a délről érkező kérések keletre fordulnak.
+	\begin{figure}
+		\centering \includegraphics[width=0.65\columnwidth]{Image/routing1}
+		\caption{\label{fig:routing}Crossbar routing}
+	\end{figure}
 \end{frame}
 
 \section{Konklúzió}
 
 \begin{frame}{Összefoglaló}
-  Bemutattunk egy determinisztikus packet routing algoritmust, mely megoldott egy nyitott kérdést, de számos más kérdés még mindig nyitva hagyott. Például, hogy mi történik nem centralizált esetben?
+  Bemutattunk egy determinisztikus packet routing algoritmust, mely megoldott egy nyitott kérdést. Számos más kérdés azóta is megválaszolatlan. Például, hogy mi történik nem centralizált esetben?
   \begin{table}
   	\begin{tabular}{ c c c c c }
   		\toprule
