@@ -64,7 +64,7 @@ public class Tiling {
 		int index = -1;
 		
 		for (int i = 0; i < (n / lv); i++) {
-			if (((i * lv) >= v) && (((i - 1) * lv) <= v)) {
+			if (((i * lv) >= v) && (((i - 1) * lv) < v)) {
 				return i;
 			}
 		}

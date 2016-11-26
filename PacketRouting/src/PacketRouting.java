@@ -157,24 +157,52 @@ public class PacketRouting {
 		
 		ArrayList<Integer> path = new ArrayList<Integer>();
 		
-		getIPPpath(tmp.getTileIndex(source), tmp.getTileIndex(destination), tilingNumber, path);
+		getIPPpath(tmp.getTileIndex(source), tmp.getTileIndex(destination), tilingNumber, tilings.get(tilingNumber).getSWTile(req), path, 0);
 		
 		if (path.size() > pmax) {
 			return new ArrayList<Integer>();
 		}
 		
+		updateTiles(tilings.get(tilingNumber).getSWTile(req), path);
+		
 		return path;
 	}
 	
-	private void getIPPpath(int start, int dest, int tilingNumber, ArrayList<Integer> path) {
+	private void getIPPpath(int start, int dest, int tilingNumber, Tile tile, ArrayList<Integer> path, double alpha) {
 		
 		if (start != dest) {
-			if (path.size() > pmax) {
-				
+			if ((alpha + tile.getXn()) < 1) {
+				path.add(1);
+				getIPPpath(start + 1, dest, tilingNumber, tile.getN(), path, alpha + tile.getXn());
+				path.remove(path.size() - 1);
 			}
-			else {
-				
+			else if ((alpha + tile.getXw()) < 1) {
+				path.add(0);
+				getIPPpath(start + 1, dest, tilingNumber, tile.getW(), path, alpha + tile.getXw());
+				path.remove(path.size() - 1);
 			}
+		}
+		else {
+			
+		}
+		
+	}
+	
+	private void updateTiles(Tile startTile, ArrayList<Integer> path) {
+		
+		double x;
+		
+		for (Integer tile: path) {
+		    if (tile.equals(1)) {
+		    	x = startTile.getXn();
+		    	startTile.setXn(x * Math.pow(2, 1 / c) + (1 / pmax) * (Math.pow(2, 1 / c) - 1));
+		    	startTile = startTile.getN();
+		    } 
+		    else {
+		    	x = startTile.getXw();
+		    	startTile.setXw(x * Math.pow(2, 1 / c) + (1 / pmax) * (Math.pow(2, 1 / c) - 1));
+		    	startTile = startTile.getW();
+		    }
 		}
 		
 	}
