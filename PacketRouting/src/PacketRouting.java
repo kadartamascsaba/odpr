@@ -1,6 +1,7 @@
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class PacketRouting {
 
@@ -31,7 +32,8 @@ public class PacketRouting {
 		// sorted by source destination distance
 		request = new PriorityQueue<Request>(250, new RequestComparator());
 				
-		writeOutConfiguration();
+//		writeOutConfiguration();
+		loop();
 	}
 	
 	// Adds request to the list, sorted by source-destination distance
@@ -44,25 +46,54 @@ public class PacketRouting {
 	}
 	
 	public void loop() {
-		// A bunch of new requests arrive
-		filter();
+		int TIME = 0;
+		while(TIME != 100) {
+			// A bunch of new requests arrive
+			generatePackages(70, TIME);
+			filter();
+			totalRequestNumber += request.size();
+			ArrayList<Integer> init, sketch;
 		
-		ArrayList<Integer> init, sketch;
+			init   = new ArrayList<Integer>();
+			sketch = new ArrayList<Integer>();
 		
-		init   = new ArrayList<Integer>();
-		sketch = new ArrayList<Integer>();
-		
-		for(Request req: request) {
-			if(req.distance() <= lv) {
-				if(routeNear(req)) {
-					deliveredRequestNumber++;
+			for(Request req: request) {
+				if(req.distance() <= lv) {
+					if(routeNear(req)) {
+						deliveredRequestNumber++;
+					}
+				}
+				else {
+					init = initRoute(req);	           // Reject request if init is empty
+					sketch = integralPathPacking(req); // If return value is empty then request rejected
+					
+					// If both path succeeded
+					if(init.size() != 0 && sketch.size() != 0) {
+						detailedRoute(init, sketch, req);
+						deliveredRequestNumber++;
+					}
 				}
 			}
-			else {
-				init = initRoute(req);	// Reject request if init is empty
-				sketch = integralPathPacking(req); // If return value is empty then request rejected
-				System.out.println("Far request -> Using IPP and INIT algorithm");
+			TIME++;
+			stg.slide();
+			if(TIME % lv == 0) {
+				for(Tiling t : tilings) {
+					t.slide();
+				}
 			}
+		}
+		
+		System.out.println("All packages: " + totalRequestNumber);
+		System.out.println("Sent packages: " + deliveredRequestNumber);
+	}
+	
+	private void generatePackages(int n, int time) {
+		int from, to;
+		request.clear();
+		for(int i = 0; i < n; i++) {
+			from = ThreadLocalRandom.current().nextInt(0, 20);
+			to = ThreadLocalRandom.current().nextInt(from+1, 25);
+			addRequest(from, to, time);
 		}
 	}
 	
@@ -212,6 +243,90 @@ public class PacketRouting {
 		    }
 		}
 		
+	}
+	
+	// Detailed routing algorithm
+	// Calculates the package's route in the space-time grid using the init and sketch routes
+	private void detailedRoute(ArrayList<Integer> init, ArrayList<Integer> sketch, Request req) {
+		int i = req.getSource();
+		int j = req.getTime() - req.getSource();
+		int tilingNumber = getTilingNumber(req);
+		
+		Tile t = getTile(req);
+		
+		// We assume that after the initial routing the package will go to east
+		// 0 means from WEST -> EAST
+		// 1 means from SOUTH -> NORTH
+		int fromDirection = 0;
+		if(init.get(0) == 0) {
+			fromDirection = 1;
+		}
+		
+		// Move the package to the boundary of the SW quadrant of a tile s
+		for(Integer l: init) {
+			if(l == 0) {
+				stg.getVertex(i, j).incFarB(tilingNumber);
+				j++;
+			}
+			else {
+				stg.getVertex(i, j).incFarC(tilingNumber);
+				i++;				
+			}
+		}
+		
+		sketch.remove(0);
+		while(!sketch.isEmpty()) {
+			// If case that skectch graph and packet current direction is the same
+			if(fromDirection == sketch.get(0)) {
+				if(fromDirection == 1) {
+					while(i != t.getX()+lh) {
+						stg.getVertex(i, j).incFarC(tilingNumber);
+						i++;	
+					}
+					t = t.getN();
+				}
+				else {
+					while(j != t.getY()+lv) {
+						stg.getVertex(i, j).incFarB(tilingNumber);
+						j++;	
+					}
+					t = t.getW();
+				}
+			}
+			// Otherwise we apply crossbar routing
+			else {
+				if(fromDirection == 1) {
+					while(i != j) {
+						stg.getVertex(i, j).incFarC(tilingNumber);
+						i++;	
+					}
+					while(j != t.getY()+lv) {
+						stg.getVertex(i, j).incFarB(tilingNumber);
+						j++;						
+					}
+					fromDirection = 0;
+					t = t.getW();					
+				}
+				else {
+					while(i != j) {
+						stg.getVertex(i, j).incFarB(tilingNumber);
+						j++;	
+					}
+					while(i != t.getX()+lh) {
+						stg.getVertex(i, j).incFarC(tilingNumber);
+						i++;						
+					}
+					fromDirection = 1;
+					t = t.getN();					
+				}
+			}
+			sketch.remove(0);
+		}
+
+		while(i != req.getDestination()) {
+			stg.getVertex(i, j).incFarC(tilingNumber);
+			i++;
+		}
 	}
 	
 	// Initialize parameters
