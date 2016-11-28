@@ -1,3 +1,4 @@
+package core;
 public class Tile {
 	
 	Tile N, W;			// Northern and western neighbors

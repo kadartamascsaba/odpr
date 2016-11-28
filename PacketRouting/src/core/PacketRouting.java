@@ -1,3 +1,4 @@
+package core;
 import java.lang.Math;
 import java.util.ArrayList;
 import java.util.PriorityQueue;
@@ -484,10 +485,12 @@ public class PacketRouting {
 		}
 	}
 	
-	///////////////////////////////////////////////////////////////////////////	
 	public static void main(String[] args) {
 		
-		PacketRouting tmp = new PacketRouting(1000, 5, 6);
+		PacketRouting packetRouting = new PacketRouting(1000, 5, 6);
+		packetRouting.writeOutConfiguration();
+		
 		System.out.println("Test");
 	}
+	
 }
